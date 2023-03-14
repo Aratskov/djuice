@@ -35,6 +35,11 @@ function showPage(items, currentPage = 1) {
     button.textContent = page;
     if (pages[i] === currentPage) {
       button.classList.add('active');
+      button.disabled = true
+    }
+    if(pages[i] === '...'){
+      button.disabled = true
+      
     }
     paginationEl.appendChild(button);
   });
