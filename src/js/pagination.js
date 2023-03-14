@@ -3,10 +3,15 @@ import { pagination } from './separation-pagination';
 
 const paginationEl = document.querySelector('#pagination');
 const galleryEl = document.querySelector('.gallery');
-const paginationNum = document.querySelectorAll('.btn-pagination');
 
-const itemsPerPage = 1;
+const itemsPerPage = 2;
 const totalBTN = 7;
+let helper = [];
+
+function renderPagination(items) {
+  showPage(items);
+  helper = [...items];
+}
 
 function showPage(items, currentPage = 1) {
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -35,19 +40,13 @@ function showPage(items, currentPage = 1) {
   });
 }
 
-function renderPagination(items) {
-//   let currentPage = 1;
+function clickHandler(event) {
+  if (!event.target.classList.contains('btn-pagination')) return;
 
-  if (paginationNum) {
-    paginationEl.addEventListener('click', event => {
-      if (!event.target.classList.contains('btn-pagination')) return;
-
-      const numberPage = +event.target.textContent;
-
-      showPage(items, numberPage);
-    });
-  }
-  showPage(items);
+  const numberPage = +event.target.textContent;
+  showPage(helper, numberPage);
 }
+
+paginationEl.addEventListener('click', clickHandler);
 
 export { renderPagination };

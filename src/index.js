@@ -14,6 +14,7 @@ containerEL.addEventListener('click', clickFirstLetter);
 
 function searchCoctails(event) {
   event.preventDefault();
+
   const inputValue = event.currentTarget.elements.input.value.trim();
   if (!inputValue) return;
 
@@ -50,6 +51,7 @@ function clickFirstLetter(event) {
       console.log('bad');
       return;
     }
+
     addTitle('Searching results');
 
     renderPagination(data.drinks);
