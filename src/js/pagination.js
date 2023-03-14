@@ -4,7 +4,7 @@ import { pagination } from './separation-pagination';
 const paginationEl = document.querySelector('#pagination');
 const galleryEl = document.querySelector('.gallery');
 
-const itemsPerPage = 2;
+const itemsPerPage = 9;
 const totalBTN = 7;
 let helper = [];
 
@@ -29,20 +29,22 @@ function showPage(items, currentPage = 1) {
 
   const pages = pagination(currentPage, totalPage, totalBTN);
 
-  pages.forEach((page, i) => {
-    const button = document.createElement('button');
-    button.classList.add('btn-pagination');
-    button.textContent = page;
-    if (pages[i] === currentPage) {
-      button.classList.add('active');
-      button.disabled = true
-    }
-    if(pages[i] === '...'){
-      button.disabled = true
-      
-    }
-    paginationEl.appendChild(button);
-  });
+  if(totalPage>1){
+    pages.forEach((page, i) => {
+      const button = document.createElement('button');
+      button.classList.add('btn-pagination');
+      button.textContent = page;
+      if (pages[i] === currentPage) {
+        button.classList.add('active');
+        button.disabled = true
+      }
+      if(pages[i] === '...'){
+        button.disabled = true
+        
+      }
+      paginationEl.appendChild(button);
+    });
+  }
 }
 
 function clickHandler(event) {
