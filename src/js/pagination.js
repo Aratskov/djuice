@@ -8,6 +8,7 @@ let itemsPerPage = 9;
 const totalBTN = 7;
 let helper = [];
 let activePage = 1;
+let screenWidth = window.innerWidth;
 
 loadScreenSizeFromLocalStorage();
 
@@ -84,8 +85,8 @@ function clickHandler(event) {
   showPage(helper, numberPage);
 }
 
-function screenWidth() {
-  const screenWidth = window.innerWidth;
+function screenWidthFull() {
+  screenWidth = window.innerWidth;
 
   if (screenWidth < 768) {
     itemsPerPage = 3;
@@ -94,11 +95,11 @@ function screenWidth() {
   } else {
     itemsPerPage = 9;
   }
-  localStorage.setItem('itemsPerPage', itemsPerPage);
+  localStorage.setItem('itemsPerPage',JSON.stringify(itemsPerPage));
 }
 
 function loadScreenSizeFromLocalStorage() {
-  const savedItemsPerPage = localStorage.getItem('itemsPerPage');
+  const savedItemsPerPage = JSON.parse(localStorage.getItem('itemsPerPage'));
   if (savedItemsPerPage !== null) {
     itemsPerPage = parseInt(savedItemsPerPage);
   }
@@ -121,7 +122,8 @@ function prevPageActive(event) {
 paginationEl.addEventListener('click', nextPageActive);
 paginationEl.addEventListener('click', prevPageActive);
 paginationEl.addEventListener('click', clickHandler);
+window.addEventListener('resize', screenWidthFull);
 
-window.addEventListener('resize', screenWidth);
+screenWidthFull()
 
 export { renderPagination };
