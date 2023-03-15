@@ -50,17 +50,19 @@ export const pagination = (
     pages = getRange(pageCount - delta, pageCount);
   }
 
-  const withDots = (value, pair) =>
+
+    const withDots = (value, pair) =>
     pages.length + 1 !== pageCount ? pair : [value];
   const lastPage = pages[pages.length - 1];
 
   if (pages[0] !== 1) {
-    pages = withDots(1, [1, '...']).concat(pages);
+    pages = withDots(1, [1, '...' ]).concat(pages);
   }
 
   if (lastPage && lastPage < pageCount) {
     pages = pages.concat(withDots(pageCount, ['...', pageCount]));
   }
+
 
   return pages;
 };
