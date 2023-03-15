@@ -132,3 +132,42 @@ function updatePaginationButtons(currentPage, totalPages, totalBTN) {
       }
     });
   }
+
+  // НА 3 ЧАСТИ ДЕЛИТ
+
+  export function pagination(currentPage, totalPage, totalBtn) {
+    const halfPagesShown = Math.floor(totalBtn / 2);
+    const rangeStart = Math.max(currentPage - halfPagesShown, 1);
+    const rangeEnd = Math.min(currentPage + halfPagesShown, totalPage);
+    let pages = [];
+  
+    if (totalPage <= totalBtn) {
+      for (let i = 1; i <= totalPage; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= halfPagesShown + 1) {
+        for (let i = 1; i <= totalBtn - 1; i++) {
+          pages.push(i);
+        }
+        pages.push("...");
+        pages.push(totalPage);
+      } else if (currentPage > totalPage - halfPagesShown) {
+        pages.push(1);
+        pages.push("...");
+        for (let i = totalPage - (totalBtn - 2); i <= totalPage; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push("...");
+        for (let i = rangeStart; i <= rangeEnd; i++) {
+          pages.push(i);
+        }
+        pages.push("...");
+        pages.push(totalPage);
+      }
+    }
+  
+    return pages;
+  }

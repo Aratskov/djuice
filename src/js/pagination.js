@@ -1,11 +1,11 @@
 import markupCoctail from './markup';
-import { pagination } from './separation-pagination';
+import { pagination } from './pagination2';
 
 const paginationEl = document.querySelector('#pagination');
 const galleryEl = document.querySelector('.gallery');
 
 let itemsPerPage = 9;
-const totalBTN = 7;
+let totalBTN = 7;
 let helper = [];
 let activePage = 1;
 let screenWidth = window.innerWidth;
@@ -23,7 +23,6 @@ function showPage(items, currentPage = 1) {
   const pageItems = items.slice(startIndex, endIndex);
 
   activePage = currentPage;
-  console.log(activePage);
 
   galleryEl.replaceChildren();
   galleryEl.insertAdjacentHTML('beforeend', markupCoctail(pageItems));
@@ -90,12 +89,13 @@ function screenWidthFull() {
 
   if (screenWidth < 768) {
     itemsPerPage = 3;
-  } else if (screenWidth < 1024) {
+    totalBTN = 5;
+  } else if (screenWidth < 1280) {
     itemsPerPage = 6;
   } else {
     itemsPerPage = 9;
   }
-  localStorage.setItem('itemsPerPage',JSON.stringify(itemsPerPage));
+  localStorage.setItem('itemsPerPage', JSON.stringify(itemsPerPage));
 }
 
 function loadScreenSizeFromLocalStorage() {
@@ -107,14 +107,12 @@ function loadScreenSizeFromLocalStorage() {
 
 function nextPageActive(event) {
   if (!event.target.classList.contains('next')) return;
-  console.log('good');
   activePage++;
   showPage(helper, activePage);
 }
 
 function prevPageActive(event) {
   if (!event.target.classList.contains('prev')) return;
-  console.log('bad');
   activePage--;
   showPage(helper, activePage);
 }
@@ -124,6 +122,6 @@ paginationEl.addEventListener('click', prevPageActive);
 paginationEl.addEventListener('click', clickHandler);
 window.addEventListener('resize', screenWidthFull);
 
-screenWidthFull()
+screenWidthFull();
 
 export { renderPagination };
