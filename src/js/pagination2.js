@@ -21,22 +21,28 @@ export function pagination(currentPage, totalPage, totalButton) {
     deltaArr.push(i);
   }
 
-  if (currentPage < breakingStart) {
-    pages = [...startArr, '...', totalPage];
-  } else if (currentPage >= breakingStart) {
-    for (let i = currentPage; i <= currentPage + halfPagesShown; i++) {
-      pages.push(i - 1);
+  if (totalPage <= totalButton) {
+    for (let i = 1; i <= totalPage; i++) {
+      pages.push(i);
     }
-    pages.push('...');
-    pages.push(totalPage);
-  }
+  } else {
+    if (currentPage < breakingStart) {
+      pages = [...startArr, '...', totalPage];
+    } else if (currentPage >= breakingStart) {
+      for (let i = currentPage; i <= currentPage + halfPagesShown; i++) {
+        pages.push(i - 1);
+      }
+      pages.push('...');
+      pages.push(totalPage);
+    }
 
-  if (currentPage >= breakingEnd) {
-    pages = [1, '...', ...endArr];
-  }
+    if (currentPage >= breakingEnd) {
+      pages = [1, '...', ...endArr];
+    }
 
-  if (currentPage === breakingEnd - 1 || currentPage === breakingEnd) {
-    pages = [...deltaArr, ...endArr];
+    if (currentPage === breakingEnd - 1 || currentPage === breakingEnd) {
+      pages = [...deltaArr, ...endArr];
+    }
   }
 
   return pages;

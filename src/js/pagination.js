@@ -1,20 +1,20 @@
 import markupCoctail from './markup';
 import { pagination } from './pagination2';
 
-const paginationEl = document.querySelector('#pagination');
+const paginationEl = document.querySelector('.pagination-number');
 const galleryEl = document.querySelector('.gallery');
 
 let itemsPerPage = 9;
-let totalBTN = 7;
-let helper = [];
+let totalBtn = 7;
+let copyArr = [];
 let activePage = 1;
 let screenWidth = window.innerWidth;
 
 loadScreenSizeFromLocalStorage();
 
-function renderPagination(items) {
-  showPage(items);
-  helper = [...items];
+function renderPagination({drinks}) {
+  showPage(drinks);
+  copyArr = [...drinks];
 }
 
 function showPage(items, currentPage = 1) {
@@ -27,12 +27,12 @@ function showPage(items, currentPage = 1) {
   galleryEl.replaceChildren();
   galleryEl.insertAdjacentHTML('beforeend', markupCoctail(pageItems));
 
+  paginationEl.replaceChildren();
+  
   const totalPage = Math.ceil(items.length / itemsPerPage);
-
   if (totalPage > 1) {
-    paginationEl.replaceChildren();
     createPrevBtn(currentPage);
-    createPagination(currentPage, totalPage, totalBTN);
+    createPagination(currentPage, totalPage, totalBtn);
     createNextBtn(totalPage, currentPage);
   }
 }
@@ -47,8 +47,8 @@ function createPrevBtn(currentPage) {
   }
 }
 
-function createPagination(currentPage, totalPage, totalBTN) {
-  const pages = pagination(currentPage, totalPage, totalBTN);
+function createPagination(currentPage, totalPage, totalBtn) {
+  const pages = pagination(currentPage, totalPage, totalBtn);
 
   const renderNumber = pages.forEach((page, i) => {
     const button = document.createElement('button');
@@ -81,7 +81,7 @@ function clickHandler(event) {
   if (!event.target.classList.contains('btn-pagination')) return;
 
   const numberPage = +event.target.textContent;
-  showPage(helper, numberPage);
+  showPage(copyArr, numberPage);
 }
 
 function screenWidthFull() {
@@ -89,17 +89,17 @@ function screenWidthFull() {
 
   if (screenWidth < 768) {
     itemsPerPage = 3;
-    totalBTN = 5;
+    totalBtn = 5;
   } else if (screenWidth < 1280) {
     itemsPerPage = 6;
   } else {
     itemsPerPage = 9;
   }
-  localStorage.setItem('itemsPerPage', JSON.stringify(itemsPerPage));
+  localStorage.setItem('PerPages', JSON.stringify(itemsPerPage));
 }
 
 function loadScreenSizeFromLocalStorage() {
-  const savedItemsPerPage = JSON.parse(localStorage.getItem('itemsPerPage'));
+  const savedItemsPerPage = JSON.parse(localStorage.getItem('PerPage'));
   if (savedItemsPerPage !== null) {
     itemsPerPage = parseInt(savedItemsPerPage);
   }
@@ -108,13 +108,13 @@ function loadScreenSizeFromLocalStorage() {
 function nextPageActive(event) {
   if (!event.target.classList.contains('next')) return;
   activePage++;
-  showPage(helper, activePage);
+  showPage(copyArr, activePage);
 }
 
 function prevPageActive(event) {
   if (!event.target.classList.contains('prev')) return;
   activePage--;
-  showPage(helper, activePage);
+  showPage(copyArr, activePage);
 }
 
 paginationEl.addEventListener('click', nextPageActive);

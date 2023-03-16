@@ -4,7 +4,7 @@ import { renderPagination } from './js/pagination';
 const form = document.querySelector('form');
 const galleryEl = document.querySelector('.gallery');
 const containerEL = document.querySelector('.container');
-const paginationEl = document.querySelector('#pagination');
+const paginationEl = document.querySelector('.pagination-number');
 const titleGallery = document.querySelector('.container-gallery');
 
 const coctailList = new CoctailList();
@@ -20,8 +20,8 @@ function searchCoctails(event) {
 
   coctailList.query = inputValue;
 
-  galleryEl.replaceChildren();
-  paginationEl.replaceChildren();
+  galleryEl.innerHTML = '';
+  paginationEl.innerHTML = '';
   titleGallery.firstChild.remove();
 
   coctailList.fetchCoctail().then(data => {
@@ -31,7 +31,7 @@ function searchCoctails(event) {
     }
     addTitle('Cocktails');
 
-    renderPagination(data.drinks);
+    renderPagination(data);
     form.reset();
   });
 }
@@ -40,21 +40,25 @@ function clickFirstLetter(event) {
   if (event.target.nodeName !== 'LI') return;
   const firstLetter = event.target.textContent;
   coctailList.letter = firstLetter;
-  coctailList.query = null;
-  galleryEl.replaceChildren();
-  paginationEl.replaceChildren();
+  // coctailList.query = null;
+  if(!coctailList.letter) return
+  // galleryEl.replaceChildren();
+  galleryEl.innerHTML = '';
+
+  paginationEl.innerHTML ='';
+
 
   titleGallery.firstChild.remove();
 
   coctailList.firstLetter().then(data => {
-    if (!data.drinks) {
-      console.log('bad');
-      return;
+    if (data.drinks === null) {
+      addTitle("Sorry, we didn't find any cocktail for you");
+     return;
     }
 
     addTitle('Searching results');
 
-    renderPagination(data.drinks);
+    renderPagination(data);
   });
 }
 
